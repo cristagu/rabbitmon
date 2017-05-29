@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Servers list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Host</th>
+                <th>Port</th>
+                <th>User</th>
+                <th>Pass</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for server in servers %}
+            <tr>
+                <td><a href="{{ path('server_show', { 'name': server.name }) }}">{{ server.name }}</a></td>
+                <td>{{ server.host }}</td>
+                <td>{{ server.port }}</td>
+                <td>{{ server.user }}</td>
+                <td>{{ server.pass }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('server_show', { 'name': server.name }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('server_edit', { 'name': server.name }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('server_new') }}">Create a new server</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,32 @@
+<div class="card card-outline-primary">
+    <div class="card-header">
+        <h2>{{ server.name }}</h2>
+    </div>
+    <div class="card-block">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>vhost</th>
+                <th>queue</th>
+                <th>messages</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for queue in server.queues %}
+                {% if queue.messages > 10000 %}
+                    <tr class="table-danger">
+                {% else %}
+                    <tr>
+                {% endif %}
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ queue.vhost }}</td>
+                    <td>{{ queue.name }}</td>
+                    <td>{{ queue.messages }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('new_queue', {'name': server.name}) }}" class="btn btn-outline-primary">Add queue</a>
+    </div>
+</div>

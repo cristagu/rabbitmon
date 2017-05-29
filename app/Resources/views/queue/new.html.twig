@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card card-outline-primary">
+    <div class="card-header">
+        <h1>Create queue</h1>
+    </div>
+    <div class="card-block">
+        {{ form_start(form) }}
+            <div class="form-group">
+                <label for="formGroupExampleInput">Vhost</label>
+                {{ form_widget(form.vhost, {'attr': {'class': 'form-control', 'placeholder': 'vhost...'}}) }}
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Queue name</label>
+                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'queue name...'}}) }}
+            </div>
+            <input type="submit" class="btn btn-primary" value="Create" />
+            <a href="{{ path('homepage') }}" class="btn btn-success">Back</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

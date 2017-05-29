@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card card-outline-primary">
+    <div class="card-header">
+        <h1>Create queue</h1>
+    </div>
+    <div class="card-block">
+        {{ form_start(form) }}
+        <div class="form-group">
+            <label for="formGroupExampleInput">Name</label>
+            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Server name'}}) }}
+        </div>
+
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Server host</label>
+            {{ form_widget(form.host, {'attr': {'class': 'form-control', 'placeholder': 'Server host'}}) }}
+        </div>
+
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Server api port</label>
+            {{ form_widget(form.port, {'attr': {'class': 'form-control', 'placeholder': 'Server port'}}) }}
+        </div>
+
+        <div class="form-group">
+            <label for="formGroupExampleInput2">User</label>
+            {{ form_widget(form.user, {'attr': {'class': 'form-control', 'placeholder': 'API HTTP Auth user'}}) }}
+        </div>
+
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Password</label>
+            {{ form_widget(form.pass, {'attr': {'class': 'form-control', 'placeholder': 'API HTTP Auth password'}}) }}
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Create" />
+        <a href="{{ path('homepage') }}" class="btn btn-success">Back</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

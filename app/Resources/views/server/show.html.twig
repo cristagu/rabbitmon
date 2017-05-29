@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Server</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ server.name }}</td>
+            </tr>
+            <tr>
+                <th>Host</th>
+                <td>{{ server.host }}</td>
+            </tr>
+            <tr>
+                <th>Port</th>
+                <td>{{ server.port }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ server.user }}</td>
+            </tr>
+            <tr>
+                <th>Pass</th>
+                <td>{{ server.pass }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('server_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('server_edit', { 'name': server.name }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
