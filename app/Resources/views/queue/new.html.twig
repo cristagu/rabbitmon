@@ -1,5 +1,35 @@
 {% extends 'base.html.twig' %}
+{% block javascripts %}
+{{ parent() }}
+    <script src="{{ asset('bundles/app/auto-complete.js') }}"></script>
+    <script>
+    $(document).ready(function() {
+        var server = '{{ app.request.get('name') }}';
+        var autocomplete = new autoComplete({
+            selector: '#appbundle_queue_name',
+            source: function(term, response){
+                $.getJSON('/app_dev.php/server/' + server + '/ro/queue-names', { q: term }, function(data){ response(data); });
+            }
+        });
 
+        $('#appbundle_queue_vhost').on('change paste keyup', function() {
+            autocomplete.destroy();
+            var vhost = $(this).val();
+            autocomplete = new autoComplete({
+                selector: '#appbundle_queue_name',
+                source: function(term, response){
+                    $.getJSON('/app_dev.php/server/' + server + '/' + vhost + '/queue-names', { q: term }, function(data){ response(data); });
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/app/auto-complete.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block body %}
     <div class="card card-outline-primary">
     <div class="card-header">

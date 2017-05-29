@@ -4,9 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Queue;
 use AppBundle\Entity\Server;
+use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Server controller.
@@ -160,5 +163,51 @@ class ServerController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @Route("/{name}/{vhost}/queue-names", name="queue_names")
+     *
+     * @param Request $request
+     * @param Server $server
+     * @param string $vhost
+     *
+     * @return JsonResponse
+     */
+    public function getQueueNamesAction(Request $request, Server $server, string $vhost)
+    {
+        $query = $request->get('q');
+
+        $uri = 'http://' . $server->getHost() . ':' . $server->getPort() . '/api/queues/';
+
+        $client = new Client(
+            [
+                'base_uri' => $uri
+            ]
+        );
+
+        $options = [
+            'auth' => [
+                $server->getUser(),
+                $server->getPass()
+            ]
+        ];
+
+        $resp = $client->get($vhost, $options);
+        $data = json_decode($resp->getBody()->getContents(), true);
+
+        $names = [];
+
+        foreach ($data as $queueData) {
+            if (!empty($query)) {
+                if (strstr($queueData['name'], $query)) {
+                    $names[] = $queueData['name'];
+                }
+            } else {
+                $names[] = $queueData['name'];
+            }
+        }
+
+        return new JsonResponse($names);
     }
 }
