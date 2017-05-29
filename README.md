@@ -1,0 +1,2 @@
+# rabbitmon
+Rabbit queue monitor
