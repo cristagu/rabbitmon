@@ -1,5 +1,6 @@
 <div class="card card-outline-primary ">
     <div class="card-header">
+        <div class="float-right"><a class="btn btn-sm btn-outline-danger" href="{{ path('server_delete', {'name': server.name}) }}"><i class="fa fa-times"></i></a></div>
         <h2>{{ server.name }}</h2>
     </div>
     <div class="card-block">
@@ -10,6 +11,7 @@
                 <th>vhost</th>
                 <th>queue</th>
                 <th>messages</th>
+                <th>actions</th>
             </tr>
             </thead>
             <tbody>
@@ -23,6 +25,9 @@
                     <td>{{ queue.vhost }}</td>
                     <td>{{ queue.name }}</td>
                     <td>{{ queue.messages }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-danger" href="{{ path('queue_delete', {'id': queue.id}) }}"><i class="fa fa-times"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

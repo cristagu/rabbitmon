@@ -101,21 +101,16 @@ class QueueController extends Controller
     /**
      * Deletes a queue entity.
      *
-     * @Route("/{id}", name="queue_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="queue_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Queue $queue)
     {
-        $form = $this->createDeleteForm($queue);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($queue);
+        $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($queue);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('queue_index');
+        return $this->redirectToRoute('homepage');
     }
 
     /**

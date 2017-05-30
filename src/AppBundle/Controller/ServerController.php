@@ -141,8 +141,8 @@ class ServerController extends Controller
     /**
      * Deletes a server entity.
      *
-     * @Route("/{name}", name="server_delete")
-     * @Method("DELETE")
+     * @Route("/{name}/delete", name="server_delete")
+     * @Method("get")
      */
     public function deleteAction(Request $request, Server $server)
     {
@@ -172,24 +172,6 @@ class ServerController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-    }
-
-    /**
-     * @Route("/{name}/vhost-names", name="vhost_names")
-     *
-     * @param Request $request
-     * @param Server $server
-     * @param string $vhost
-     *
-     * @return JsonResponse
-     */
-    public function getVhostNamesAction(Request $request, Server $server)
-    {
-        return new JsonResponse(
-            [
-                'hey' => 'yo'
-            ]
-        );
     }
 
     /**
