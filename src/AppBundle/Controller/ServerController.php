@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Server controller.
@@ -107,11 +108,19 @@ class ServerController extends Controller
      *
      * @Route("/{name}/new-queue", name="new_queue")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Server $server
+     *
+     * @return Response
      */
     public function newQueueAction(Request $request, Server $server)
     {
         $queue = new Queue();
-        $form = $this->createForm('AppBundle\Form\QueueType', $queue);
+        $form = $this->createForm('AppBundle\Form\QueueType', $queue, [
+            'server' => $server
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -166,6 +175,24 @@ class ServerController extends Controller
     }
 
     /**
+     * @Route("/{name}/vhost-names", name="vhost_names")
+     *
+     * @param Request $request
+     * @param Server $server
+     * @param string $vhost
+     *
+     * @return JsonResponse
+     */
+    public function getVhostNamesAction(Request $request, Server $server)
+    {
+        return new JsonResponse(
+            [
+                'hey' => 'yo'
+            ]
+        );
+    }
+
+    /**
      * @Route("/{name}/{vhost}/queue-names", name="queue_names")
      *
      * @param Request $request
@@ -192,6 +219,10 @@ class ServerController extends Controller
                 $server->getPass()
             ]
         ];
+
+        if ($vhost == '_') {
+            $vhost = '%2F';
+        }
 
         $resp = $client->get($vhost, $options);
         $data = json_decode($resp->getBody()->getContents(), true);

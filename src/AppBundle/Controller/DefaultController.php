@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Queue;
 use AppBundle\Entity\Server;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 use GuzzleHttp\Client;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,6 +18,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        /** @var EntityRepository $repo */
         $repo = $this->getDoctrine()->getManager()->getRepository(Server::class);
 
         /** @var ArrayCollection $servers */

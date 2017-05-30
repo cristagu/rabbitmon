@@ -1,4 +1,19 @@
 {% extends 'base.html.twig' %}
+{% block javascripts %}
+{{ parent() }}
+<script>
+    $(document).ready(function() {
+        $('#appbundle_server').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
+
+{% endblock %}
 
 {% block body %}
     <div class="card card-outline-primary">
@@ -32,8 +47,10 @@
             {{ form_widget(form.pass, {'attr': {'class': 'form-control', 'placeholder': 'API HTTP Auth password'}}) }}
         </div>
 
-        <input type="submit" class="btn btn-primary" value="Create" />
+        <input type="submit" class="btn btn-primary" value="Create" disabled="true"/>
         <a href="{{ path('homepage') }}" class="btn btn-success">Back</a>
+
+        <a href="{{ path('homepage') }}" class="btn btn-success" id="test_server">Test Server</a>
         {{ form_end(form) }}
     </div>
 {% endblock %}

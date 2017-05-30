@@ -13,14 +13,18 @@
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Rabbitmon</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}">Rabbitmon</a>
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav mr-auto"></ul>
+                <ul class="navbar-nav mr-auto">
+                    <li><a href="{{ path('server_new') }}" class="btn btn-outline-primary">Add server</a></li>
+                </ul>
 
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
+
                 </form>
             </div>
         </nav>
@@ -37,6 +41,18 @@
         .card {
             margin-top: 10px;
             margin-bottom: 10px;
+        }
+
+        .jumbotron {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                width: 90%;
+                max-width: 100%;
+            }
         }
     </style>
 </html>

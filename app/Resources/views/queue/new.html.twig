@@ -2,21 +2,26 @@
 {% block javascripts %}
 {{ parent() }}
     <script src="{{ asset('bundles/app/auto-complete.js') }}"></script>
+    <script src="{{ asset('bundles/app/chosen.jquery.min.js') }}"></script>
     <script>
     $(document).ready(function() {
         var server = '{{ app.request.get('name') }}';
         var autocomplete = new autoComplete({
             selector: '#appbundle_queue_name',
+            minChars: 1,
             source: function(term, response){
                 $.getJSON('/app_dev.php/server/' + server + '/ro/queue-names', { q: term }, function(data){ response(data); });
             }
         });
 
-        $('#appbundle_queue_vhost').on('change paste keyup', function() {
+        $('#appbundle_queue_vhost').chosen();
+
+        $('#appbundle_queue_vhost').chosen().change(function() {
             autocomplete.destroy();
             var vhost = $(this).val();
             autocomplete = new autoComplete({
                 selector: '#appbundle_queue_name',
+                minChars: 1,
                 source: function(term, response){
                     $.getJSON('/app_dev.php/server/' + server + '/' + vhost + '/queue-names', { q: term }, function(data){ response(data); });
                 }
@@ -29,6 +34,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('bundles/app/auto-complete.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/app/chosen.css') }}" rel="stylesheet" />
 {% endblock %}
 {% block body %}
     <div class="card card-outline-primary">

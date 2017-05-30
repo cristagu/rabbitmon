@@ -1,8 +1,29 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {#<script>#}
+        {#$(document).ready(function() {#}
+            {#setTimeout(function () {#}
+                {#window.location.reload(true);#}
+            {#}, 5000)#}
+        {#});#}
+    {#</script>#}
+{% endblock %}
 {% block body %}
-    {% for server in servers %}
-        {% include 'AppBundle::server.html.twig' with {'server': server} %}
-    {% endfor %}
-    <a href="{{ path('server_new') }}" class="btn btn-outline-primary">Add server</a>
+    {% if servers is empty %}
+        <div class="jumbotron">
+            <h1 class="display-3">Server list is empty</h1>
+            <p class="lead">You are not tracking any rabbit servers, go on and add some.</p>
+            <p class="lead">
+                <a href="{{ path('server_new') }}" class="btn btn-outline-primary">Add server</a>
+            </p>
+        </div>
+    {% else %}
+        <div class="card-columns">
+        {% for server in servers %}
+            {% include 'AppBundle::server.html.twig' with {'server': server} %}
+        {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
