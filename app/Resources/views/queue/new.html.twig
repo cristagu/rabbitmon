@@ -6,15 +6,16 @@
     <script>
     $(document).ready(function() {
         var server = '{{ app.request.get('name') }}';
+
+
+        $('#appbundle_queue_vhost').chosen();
         var autocomplete = new autoComplete({
             selector: '#appbundle_queue_name',
             minChars: 1,
             source: function(term, response){
-                $.getJSON('/app_dev.php/server/' + server + '/ro/queue-names', { q: term }, function(data){ response(data); });
+                $.getJSON('/app_dev.php/server/' + server + '/' + $('#appbundle_queue_vhost').val() + '/queue-names', { q: term }, function(data){ response(data); });
             }
         });
-
-        $('#appbundle_queue_vhost').chosen();
 
         $('#appbundle_queue_vhost').chosen().change(function() {
             autocomplete.destroy();
