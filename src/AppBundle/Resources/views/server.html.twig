@@ -17,9 +17,8 @@
             {% endif %}
             <div class="queue-container {{ style }}" data-queue-id="{{ queue.id }}">
                 <div class="row">
-                    <div class="col-2">{{ queue.vhost }}</div>
-                    <div class="col-8">{{ queue.name }}</div>
-                    <div class="col-1" id="queue_{{ queue.id }}_messages">{{ queue.messages }}</div>
+                    <div class="col-10"><strong>{{ queue.vhost }}</strong>/{{ queue.name }}</div>
+                    <div class="col-2" id="queue_{{ queue.id }}_messages">{{ queue.messages }}</div>
                     <div class="delete">
                         <a href="{{ path('queue_delete', {'id': queue.id}) }}"> Delete <i class="fa fa-times"></i></a>
                     </div>
