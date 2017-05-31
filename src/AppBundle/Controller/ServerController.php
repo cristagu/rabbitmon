@@ -146,16 +146,11 @@ class ServerController extends Controller
      */
     public function deleteAction(Request $request, Server $server)
     {
-        $form = $this->createDeleteForm($server);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($server);
+        $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($server);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('server_index');
+        return $this->redirectToRoute('homepage');
     }
 
     /**
