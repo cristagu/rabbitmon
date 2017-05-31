@@ -3,9 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Queue;
+use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Queue controller.
@@ -127,5 +130,38 @@ class QueueController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Deletes a queue entity.
+     *
+     * @Route("/{id}/message-count", name="message_count")
+     * @Method("GET")
+     */
+    public function messageCountAction(Queue $queue)
+    {
+        $uri = 'http://' . $queue->getServer()->getHost() . ':' . $queue->getServer()->getPort() . '/api/queues/';
+        $client = new Client(
+            [
+                'base_uri' => $uri
+            ]
+        );
+        $options = [
+            'auth' => [
+                $queue->getServer()->getUser(),
+                $queue->getServer()->getPass()
+            ]
+        ];
+
+        $vhost = $queue->getVhost();
+        if ($vhost == '_') {
+            $vhost = '%2F';
+        }
+        $resp = $client->get($vhost . '/' . $queue->getName(), $options);
+        $data = json_decode($resp->getBody()->getContents());
+
+        return new JsonResponse([
+            'count' => $data->messages
+        ]);
     }
 }

@@ -40,7 +40,11 @@ class DefaultController extends Controller
             ];
             /** @var Queue $queue */
             foreach ($server->getQueues() as $queue) {
-                $resp = $client->get($queue->getVhost() . '/' . $queue->getName(), $options);
+                $vhost = $queue->getVhost();
+                if ($vhost == '_') {
+                    $vhost = '%2F';
+                }
+                $resp = $client->get($vhost . '/' . $queue->getName(), $options);
                 $data = json_decode($resp->getBody()->getContents());
 
                 $queue->setMessages($data->messages);

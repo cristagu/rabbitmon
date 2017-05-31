@@ -1,27 +1,22 @@
 <div class="card card-outline-primary ">
     <div class="card-header">
-        <div class="float-right"><a class="btn btn-sm btn-outline-danger" href="{{ path('server_delete', {'name': server.name}) }}"><i class="fa fa-times"></i></a></div>
-        <h2>{{ server.name }}</h2>
+        <div class="float-right">
+            <a class="btn btn-sm btn-outline-danger" href="{{ path('server_delete', {'name': server.name}) }}"><i class="fa fa-times"></i></a>
+            <a class="btn btn-sm btn-outline-primary" href="{{ path('new_queue', {'name': server.name}) }}"><i class="fa fa-plus"></i></a>
+        </div>
+        <h5>{{ server.name }}</h5>
     </div>
     <div class="card-block">
         <table class="table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>vhost</th>
-                <th>queue</th>
-                <th>messages</th>
-                <th>actions</th>
-            </tr>
-            </thead>
             <tbody>
             {% for queue in server.queues %}
                 {% if queue.messages > 10000 %}
                     <tr class="table-danger">
+                {% elseif queue.messages > 1000 %}
+                    <tr class="table-warning">
                 {% else %}
                     <tr>
                 {% endif %}
-                    <th scope="row">{{ loop.index }}</th>
                     <td>{{ queue.vhost }}</td>
                     <td>{{ queue.name }}</td>
                     <td>{{ queue.messages }}</td>
@@ -32,6 +27,5 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('new_queue', {'name': server.name}) }}" class="btn btn-outline-primary">Add queue</a>
     </div>
 </div>
