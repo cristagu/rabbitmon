@@ -3,11 +3,29 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-//        $(document).ready(function() {
-//            setTimeout(function () {
-//                window.location.reload(true);
-//            }, 5000)
-//        });
+        $(document).ready(function() {
+            setInterval(function () {
+                $(".queue-container").each(function() {
+                    var container = this;
+                    var id = $(this).attr('data-queue-id');
+                    var path = '{{ path('message_count', {'id': '_id'}) }}';
+                    path = path.replace('_id', id);
+
+                    $.ajax(path)
+                        .done(function (data) {
+                            if (data.count > 10000) {
+                                container.className = 'queue-container bg-danger text-white';
+                            } else if (data.count >= 100) {
+                                container.className = 'queue-container bg-warning text-white';
+                            } else {
+                                container.className = 'queue-container';
+                            }
+                            var selector = '#queue_' + id + '_messages';
+                            $(selector).html(data.count);
+                        });
+                });
+            }, 10000)
+        });
     </script>
 {% endblock %}
 {% block body %}
